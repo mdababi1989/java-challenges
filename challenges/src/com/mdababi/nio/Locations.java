@@ -1,19 +1,16 @@
 package com.mdababi.nio;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -27,29 +24,30 @@ public class Locations implements Map<Integer, Location> {
 	private static Map<Integer, Location> locations = new LinkedHashMap<Integer, Location>();
 
 	public static void main(String[] args) throws IOException {
-		Path locPath = FileSystems.getDefault().getPath("locations_big.txt");
-		Path dirPath = FileSystems.getDefault().getPath("directions_big.txt");
-		try (BufferedInputStream locFile = new )
-		
-		
+		Path locPath = FileSystems.getDefault().getPath("locations.dat");
+		ObjectOutputStream locFile = new ObjectOutputStream(Files.newOutputStream(locPath));
+		for(Location location: locations.values()) {
+			locFile.writeObject(location);
+		}
 	}
 
 	static {
-		try (ObjectInputStream locFile = new ObjectInputStream(
-				new BufferedInputStream(new FileInputStream("locations.txt")))) {
-			boolean eof= false;
-			while (!eof) {
-				try {
-					Location location = (Location) locFile.readObject();
+		Path locPath = FileSystems.getDefault().getPath("locations.dat");
+		try {
+			ObjectInputStream locFile = new ObjectInputStream(Files.newInputStream(locPath));
+			boolean eof = false;
+			try {
+			while(!eof) {
+				Location location = (Location) locFile.readObject();
 				locations.put(location.getLocationID(), location);
 				System.out.println("imported loc: " + location.getLocationID() + ":" + location.getDescription());
-				}
-				catch(EOFException e) {
-					eof = true;
-				}
 			}
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+			}catch(EOFException e) {
+				eof = true;
+			}
+			
+		} catch (IOException | ClassNotFoundException e1) {
+			e1.printStackTrace();
 		}
 
 		try (BufferedReader dirFile = new BufferedReader(new FileReader("directions_big.txt"))) {
