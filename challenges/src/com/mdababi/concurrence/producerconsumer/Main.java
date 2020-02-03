@@ -94,18 +94,20 @@ class myConsumer implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			try {
-				if (buffer.isEmpty()) {
-					continue;
-				}
-				if (buffer.peek().equals("EOF")) {
-					System.out.println(color + "exiting...");
-					break;
-				} else {
-					System.out.println(color + "removed" + buffer.take());
-				}
-			} catch (InterruptedException e) {
+			synchronized (buffer) {
+				try {
+					if (buffer.isEmpty()) {
+						continue;
+					}
+					if (buffer.peek().equals("EOF")) {
+						System.out.println(color + "exiting...");
+						break;
+					} else {
+						System.out.println(color + "removed" + buffer.take());
+					}
+				} catch (InterruptedException e) {
 
+				}
 			}
 		}
 	}
