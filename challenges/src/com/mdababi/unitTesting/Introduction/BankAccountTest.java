@@ -11,18 +11,28 @@ public class BankAccountTest {
 		BankAccount account = new BankAccount("dababi", "mohamed", 1000.00);
 		double balance = account.deposit(200.00, true);
 		assertEquals(1200.00, balance, 0);
-		assertEquals(1200.00, account.getBalance(), 0);
 	}
 
 	@Test
 	public void testWithdraw() {
-		fail("Not yet implemented withdraw");
+		BankAccount account = new BankAccount("dababi", "mohamed", 1000.00);
+		double balance = account.withdraw(200.00, true);
+		assertEquals(800.00, balance, 0);
 	}
 
 	@Test
-	public void testGetBalance() {
-		fail("Not yet implemented");
+	public void testGetBalance_deposit() {
+		BankAccount account = new BankAccount("dababi", "mohamed", 1000.00);
+		double balance = account.deposit(200.00, true);
+		assertEquals(1200.00, account.getBalance(), 0);
 	}
-	
+
+	@Test
+	public void testGetBalance_withdraw() {
+		BankAccount account = new BankAccount("dababi", "mohamed", 1000.00);
+		double balance = account.withdraw(200.00, true);
+		assertEquals(800.00, account.getBalance(), 0);
+	}
+
 
 }
