@@ -1,4 +1,4 @@
-package com.mdababi.unitTesting.Introduction;
+package com.mdababi.unitTesting.junit;
 
 public class Main {
 
